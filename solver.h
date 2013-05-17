@@ -17,9 +17,11 @@ class Solver {
         PerfCnt     perfCnt;
         static Long pos[MAX_DEEP];
         static Byte step[MAX_DEEP];
-        void dump(int deep);
+        void dumpSolve(int deep);
+        void dumpPos(int delta);
+        void dumpTotal();
         bool checkPos(Long p, int deep);
-        bool solve(int deep, int delta, int X, int Y);
+        bool solve(int deep, int delta, int startDelta, int X, int Y);
         Long getStep(Long p, int x, int y, int dx, int dy, int& dd);
 };
 
