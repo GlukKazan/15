@@ -42,6 +42,22 @@ bool Initializer::checkInit(Long s, Long e) {
     return true;
 }
 
+void Initializer::dumpPos(Long s, Long e, int delta) {
+    printf("0x");
+    Long mask = 0xFFFF;
+    for (int shift = 48; shift >= 0; shift -= 16) {
+        int x = (int)((s & (mask << shift)) >> shift);
+        printf("%04X", x);
+    }
+    printf(" 0x");
+    mask = 0xFFFF;
+    for (int shift = 48; shift >= 0; shift -= 16) {
+        int x = (int)((e & (mask << shift)) >> shift);
+        printf("%04X", x);
+    }
+    printf(" %d\n", delta);
+}
+
 bool Initializer::addPos(Long s, Long e) {
     if (!checkPos(s, e)) return true;
     if (taskCnt >= MAX_TASKS) return false;
@@ -51,6 +67,7 @@ bool Initializer::addPos(Long s, Long e) {
     tasks[taskCnt].isProcessed = false;
     if (tasks[taskCnt].delta == 0) return false;
     if (tasks[taskCnt].delta > stepCnt) return true;
+//  dumpPos(s, e, tasks[taskCnt].delta);
     taskCnt++;
     return true;
 }
@@ -89,7 +106,7 @@ bool Initializer::init(Long s, Long e) {
             Long y = e;
             Long me = 0xF;
             for (int j = 0; j <= MAX_DIGIT; j++) {
-                if ((y & me) == t) {
+                if ((y & 0xF) == t) {
                     Long k = e;
                     setDigit(k, me, d);
                     if (!init(s, k)) return false;
