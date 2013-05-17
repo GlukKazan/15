@@ -28,6 +28,7 @@ class Initializer {
         Long getFreeDigit();
         bool checkPos(Long s, Long e);
         void normalize(Long& p);
+        void dumpPos(Long s, Long e, int delta);
 };
 
 #endif
