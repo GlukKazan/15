@@ -3,12 +3,27 @@
 Long Solver::pos[MAX_DEEP];
 Byte Solver::step[MAX_DEEP];
 
-void Solver::dump(int deep) {
+void Solver::dumpPos(int delta) {
+    printf("Delta: %d\n\n", delta);
+    Long mask = 0xFFFF;
+    for (int shift = 48; shift >= 0; shift -= 16) {
+        int x = (int)((startPos & (mask << shift)) >> shift);
+        int y = (int)((endPos & (mask << shift)) >> shift);
+        printf("%04X %04X\n", x, y);
+    }
+}
+
+void Solver::dumpSolve(int deep) {
+    printf("\n");
     for (int i = 0; i < deep; i++) {
         printf("%d", step[i]);
     }
-    printf("\n\nCount: %6I64d\n", posCnt);
-    printf("Time: %7.3f\n", perfCnt.elapsed());
+    printf("\n");
+}
+
+void Solver::dumpTotal() {
+    printf("\nCount: %6I64d\n", posCnt);
+    printf("Time: %7.3f\n\n", perfCnt.elapsed());
 }
 
 bool Solver::checkPos(Long p, int deep) {
@@ -26,7 +41,10 @@ bool Solver::solve() {
     int delta = getDelta(startPos, endPos);
     int X     = getX(startPos);
     int Y     = getY(startPos);
-    return solve(0, delta, X, Y);
+    dumpPos(delta);
+    bool r = solve(0, delta, delta, X, Y);
+    dumpTotal();
+    return r;
 }
 
 Long Solver::getStep(Long p, int x, int y, int dx, int dy, int& dd) {
@@ -53,12 +71,15 @@ Long Solver::getStep(Long p, int x, int y, int dx, int dy, int& dd) {
     return p;
 }
 
-bool Solver::solve(int deep, int delta, int X, int Y) {
+bool Solver::solve(int deep, int delta, int startDelta, int X, int Y) {
     if (pos[deep] == endPos) {
-        dump(deep);
+        dumpSolve(deep);
         return true;
     }
     if (delta > stepCnt - deep) {
+        return false;
+    }
+    if (delta - startDelta > MAX_DELTA_DIFF) {
         return false;
     }
     for (int i = 0; i < 4; i++) {
@@ -85,7 +106,7 @@ bool Solver::solve(int deep, int delta, int X, int Y) {
         if (checkPos(pos[deep + 1], deep)) continue;
         step[deep] = i;
         posCnt++;
-        if (solve(deep + 1, delta + dd, X + dx, Y + dy)) return true;
+        if (solve(deep + 1, delta + dd, startDelta, X + dx, Y + dy)) return true;
     }
     return false;
 }
