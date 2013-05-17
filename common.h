@@ -5,11 +5,12 @@ typedef unsigned __int64 Long;
 typedef unsigned __int16 Short;
 typedef unsigned char    Byte;
 
-const int MAX_POSITION = 4;
-const int MAX_DIGIT    = 15;
-const int MAX_DEEP     = 100;
-const int MAX_LOOP     = 10;
-const int MAX_TASKS    = 10;
+const int MAX_POSITION    = 4;
+const int MAX_DIGIT       = 15;
+const int MAX_DEEP        = 100;
+const int MAX_LOOP        = 10;
+const int MAX_TASKS       = 100;
+const int MAX_DELTA_DIFF  = 5;
 
 int  getPosition(Long part);
 int  getX(Long state);
