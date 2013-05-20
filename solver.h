@@ -1,7 +1,7 @@
 #ifndef SOLVER_H_
 #define SOLVER_H_
 
-#include <vector>
+#include <stdio.h>
 #include "common.h"
 #include "PerfCnt.h"
 
