@@ -4,7 +4,7 @@ Long Solver::pos[MAX_DEEP];
 Byte Solver::step[MAX_DEEP];
 
 void Solver::dumpPos(int delta) {
-    printf("Delta: %d\n\n", delta);
+    printf("Distance: %d\n\n", delta);
     Long mask = 0xFFFF;
     for (int shift = 48; shift >= 0; shift -= 16) {
         int x = (int)((startPos & (mask << shift)) >> shift);
